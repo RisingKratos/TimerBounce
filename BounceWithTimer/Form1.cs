@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace BounceWithTimer
 {
@@ -50,6 +53,32 @@ namespace BounceWithTimer
                     point.X = point.X - 1;
                     bouncePainter.DrawEllipse(spherePainter, point.X, point.Y, 20, 20);
                 }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            BouncingTimer.Enabled = false;
+            XmlSerializer formatter = new XmlSerializer(typeof(Point));
+            FileStream flux = new FileStream("BouncePoint.txt", FileMode.Truncate);
+            flux.Close();
+            using (flux = new FileStream("BouncePoint.txt", FileMode.OpenOrCreate))
+            {
+                formatter.Serialize(flux, point);
+            }
+        }
+
+        private void OpenAndUseButton_Click(object sender, EventArgs e)
+        {
+            XmlSerializer formatter = new XmlSerializer(typeof(Point));
+            using (FileStream flux = new FileStream("BouncePoint.txt", FileMode.Open))
+            {
+                point = (Point)formatter.Deserialize(flux);
+            }
+        }
+
+        private void StopTimer_Click(object sender, EventArgs e)
+        {
+            BouncingTimer.Enabled = false;
         }
     }
 }
