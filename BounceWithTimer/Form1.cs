@@ -59,9 +59,10 @@ namespace BounceWithTimer
         {
             BouncingTimer.Enabled = false;
             XmlSerializer formatter = new XmlSerializer(typeof(Point));
-            FileStream flux = new FileStream("BouncePoint.txt", FileMode.Truncate);
-            flux.Close();
-            using (flux = new FileStream("BouncePoint.txt", FileMode.OpenOrCreate))
+            /*FileStream flux = new FileStream("BouncePoint.txt", FileMode.Truncate);
+            flux.Close();*/
+            File.Delete(@"C:\Users\asus\Documents\visual studio 2013\Projects\BounceWithTimer\BounceWithTimer\bin\Debug\BouncePoint.txt");
+            using (FileStream flux = new FileStream("BouncePoint.txt", FileMode.OpenOrCreate))
             {
                 formatter.Serialize(flux, point);
             }
