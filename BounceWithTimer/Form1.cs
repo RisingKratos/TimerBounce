@@ -61,7 +61,11 @@ namespace BounceWithTimer
             XmlSerializer formatter = new XmlSerializer(typeof(Point));
             /*FileStream flux = new FileStream("BouncePoint.txt", FileMode.Truncate);
             flux.Close();*/
-            File.Delete(@"C:\Users\asus\Documents\visual studio 2013\Projects\BounceWithTimer\BounceWithTimer\bin\Debug\BouncePoint.txt");
+            string timerFilePath = @"C:\Users\asus\Documents\visual studio 2013\Projects\BounceWithTimer\BounceWithTimer\bin\Debug\BouncePoint.txt";
+            if (File.Exists(timerFilePath))
+            {
+                File.Delete(timerFilePath);
+            }
             using (FileStream flux = new FileStream("BouncePoint.txt", FileMode.OpenOrCreate))
             {
                 formatter.Serialize(flux, point);
@@ -71,10 +75,15 @@ namespace BounceWithTimer
         private void OpenAndUseButton_Click(object sender, EventArgs e)
         {
             XmlSerializer formatter = new XmlSerializer(typeof(Point));
-            using (FileStream flux = new FileStream("BouncePoint.txt", FileMode.Open))
+            string timerFilePath = @"C:\Users\asus\Documents\visual studio 2013\Projects\BounceWithTimer\BounceWithTimer\bin\Debug\BouncePoint.txt";
+            if (File.Exists(timerFilePath))
             {
-                point = (Point)formatter.Deserialize(flux);
+                using (FileStream flux = new FileStream("BouncePoint.txt", FileMode.Open))
+                {
+                    point = (Point)formatter.Deserialize(flux);
+                }    
             }
+            
         }
 
         private void StopTimer_Click(object sender, EventArgs e)
